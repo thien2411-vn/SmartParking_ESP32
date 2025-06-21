@@ -1,0 +1,103 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Parking 🚗</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAopln9GC5HZ34iLiPoluYuQsEnzasrQh8",
+      authDomain: "parking-management-3feda.firebaseapp.com",
+      projectId: "parking-management-3feda",
+      storageBucket: "parking-management-3feda.appspot.com",
+      messagingSenderId: "989412799811",
+      appId: "1:989412799811:web:b7e82f3b2d744e8c1eabf6",
+      measurementId: "G-VL1FXVVMLW",
+      databaseURL: "https://parking-management-3feda-default-rtdb.firebaseio.com/"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // DOM elements
+    const a1El = document.getElementById("a1");
+    const a2El = document.getElementById("a2");
+    const a3El = document.getElementById("a3");
+    const rowA1 = document.getElementById("row-a1");
+    const rowA2 = document.getElementById("row-a2");
+    const rowA3 = document.getElementById("row-a3");
+    const messageEl = document.getElementById("message");
+
+    // Listen to Firebase changes
+    const stateRef = ref(db, "parking/");
+    onValue(stateRef, (snapshot) => {
+      const data = snapshot.val();
+      if (!data) return;
+
+      updateSlot(a1El, rowA1, data.A1);
+      updateSlot(a2El, rowA2, data.A2);
+      updateSlot(a3El, rowA3, data.A3);
+
+      messageEl.innerText = data.message || "Wellcome !";
+    });
+
+    function updateSlot(textEl, rowEl, value) {
+      const isFull = value === "Full";
+      textEl.innerText = value;
+      rowEl.classList.toggle("full", isFull);
+      rowEl.classList.toggle("empty", !isFull);
+    }
+
+    // Servo button toggle (writes to Firebase)
+    const servoBtn = document.getElementById("servoBtn");
+    let servoState = false;
+    servoBtn.addEventListener("click", () => {
+      servoState = !servoState;
+      servoBtn.innerText = servoState ? "Close the barrier" : "Open the barrier";
+      set(ref(db, "parking/servo"), servoState ? "OFF" : "ON");
+    });
+
+    // Clock
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById("clock").innerText = `${h}:${m}:${s}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Smart Parking 🚗</h1>
+    <div class="clock" id="clock">00:00:00</div>
+
+    <div class="slot-status">
+      <div class="slot-row empty" id="row-a1">
+        <span class="slot-label">A1:</span>
+        <span id="a1">Empty</span>
+      </div>
+      <div class="slot-row empty" id="row-a2">
+        <span class="slot-label">A2:</span>
+        <span id="a2">Empty</span>
+      </div>
+      <div class="slot-row empty" id="row-a3">
+        <span class="slot-label">A3:</span>
+        <span id="a3">Empty</span>
+      </div>
+    </div>
+
+    <div class="message" id="message">Wellcome !</div>
+
+    <button id="servoBtn" class="servo-button">Open the barrier</button>
+  </div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+/* style.css */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f5f7fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .container {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 30px 40px;
+    text-align: center;
+    width: 380px;
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .clock {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #555;
+  }
+  
+  .slot-status {
+    margin: 20px 0;
+  }
+  
+  .slot-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 20px;
+    margin: 10px 0;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .slot-label {
+    min-width: 50px;
+    text-align: left;
+  }
+  
+  .full {
+    background: #e74c3c; 
+  }
+  
+  .empty {
+    background: #2ecc71;
+  }
+  
+  .message {
+    margin: 20px 0 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #444;
+  }
+  
+  .servo-button {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  .servo-button:hover {
+    background-color: #2980b9;
+  }
+  
